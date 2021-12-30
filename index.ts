@@ -1,8 +1,7 @@
 import server from './server/index';
 
-const port = 4000;
+const PORT = 4000;
 
-server.listen(port, () => {
-    console.log(`Listening on port ${port}`);
-    
+server.listen(PORT, () => {
+    console.log(`Listening on ${PORT}`);  
 })
