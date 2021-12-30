@@ -5,10 +5,12 @@ import {User} from "../models"
 import { Request } from "express";
 
 passport.serializeUser((user, done) => {
+    // @ts-ignore
     done(null, user.id)
 })
 
 passport.deserializeUser((id, done) => {
+    // @ts-ignore
     User.findById(id, (err, user) => {
         done(err, user);
     })
@@ -16,11 +18,18 @@ passport.deserializeUser((id, done) => {
 
 passport.use(new LocalStrategy.Strategy(
     function(username, password, done) {
+        // @ts-ignore
         User.findOne({ username: username }, function (err, user) {
           if (err) { return done(err); }
           if (!user) { return done(null, false); }
-          if (!user.comparePassword(password)) { return done(null, false); }
-          return done(null, user);
+          // @ts-ignore
+          user.comparePassword(password, (err, isMatch) => {
+            if (err) { return done(err); }
+            if (isMatch) {
+              return done(null, user);
+            }
+            return done(null, false);
+          });
         });
       }
 ))
